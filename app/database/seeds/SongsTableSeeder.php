@@ -8,16 +8,14 @@ class SongsTableSeeder extends Seeder {
 		// Uncomment the below to wipe the table clean before populating
 		 DB::table('songs')->truncate();
 
-        $faker = Faker::create();
+        $discogs_albums_tracks = DB::connection('discogs')->table('discogs_albums_tracks')->get();
 
-        foreach(range(1,100)as $index){
+        foreach($discogs_albums_tracks as $discogs_albums_track){
             Song::create(array(
-                'name' => $faker->unique()->sentence(3)
+                'name' => $discogs_albums_track->title,
+                'album_id' => $discogs_albums_track->album_id
             ));
         }
-
-		// Uncomment the below to run the seeder
-//		 DB::table('songs')->insert($songs);
-	}
+    }
 
 }

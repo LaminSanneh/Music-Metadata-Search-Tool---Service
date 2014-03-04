@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateArtistsTable extends Migration {
+class AddAlbumIdColumnToSongsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,8 @@ class CreateArtistsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('artists', function(Blueprint $table) {
-			$table->increments('id');
-			$table->string('name');
-			$table->timestamps();
+		Schema::table('songs', function(Blueprint $table) {
+			$table->unsignedInteger('album_id');
 		});
 	}
 
@@ -26,7 +24,9 @@ class CreateArtistsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('artists');
+		Schema::table('songs', function(Blueprint $table) {
+			$table->dropColumn('album_id');
+		});
 	}
 
 }

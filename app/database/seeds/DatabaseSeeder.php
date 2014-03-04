@@ -12,9 +12,13 @@ class DatabaseSeeder extends Seeder {
 		Eloquent::unguard();
 
 		// $this->call('UserTableSeeder');
+//		$this->call('ArtistsTableSeeder');
+//		$this->call('AlbumsTableSeeder');
 		$this->call('SongsTableSeeder');
-		$this->call('ArtistsTableSeeder');
-		$this->call('AlbumsTableSeeder');
+//		$this->call('DiscogsArtistIdsTableSeeder');
+//		$this->call('DiscogsArtistInfosTableSeeder');
+//		$this->call('DiscogsArtistAlbumsTableSeeder');
+//		$this->call('DiscogsAlbumTracksTableSeeder');
 	}
 
 }

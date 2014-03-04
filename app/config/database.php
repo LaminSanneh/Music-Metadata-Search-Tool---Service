@@ -63,6 +63,17 @@ return array(
 			'prefix'    => '',
 		),
 
+        'discogs' => array(
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => 'discogs_information',
+            'username'  => 'root',
+            'password'  => 'vicecity',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ),
+
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',

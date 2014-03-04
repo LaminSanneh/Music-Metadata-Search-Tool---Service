@@ -7,11 +7,14 @@
 		"laravel/framework": "4.1.*",
         "barryvdh/laravel-cors": "dev-master",
         "way/generators":"dev-master",
-        "fzaninotto/faker": "1.4.*@dev"
+        "fzaninotto/faker": "1.4.*@dev",
+        "ricbra/php-discogs-api": "dev-master",
+        "guzzle/guzzle": "3.8.*@dev"
 	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
+			"app/Thirdyear",
 			"app/controllers",
 			"app/models",
 			"app/database/migrations",

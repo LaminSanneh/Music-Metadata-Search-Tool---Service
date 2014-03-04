@@ -15,9 +15,19 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function showWelcome()
+	public function index()
 	{
-		return View::make('hello');
+        $service = new \Discogs\Service();
+        $resultset = $service->search(array(
+            'q'     => 'The Beatles',
+//            'artist' => 'Jay Z'
+            'type' => 'artist'
+        ));
+        echo count($resultset)."\n";
+//        print_r($resultset);
+
+        $artist = $service->getArtist(38661);
+        print_r($artist);
 	}
 
 }

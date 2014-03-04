@@ -11,9 +11,14 @@ class ArtistsTableSeeder extends Seeder {
 
         $faker = Faker::create();
 
-        foreach(range(1,100)as $index){
+        $artists = DB::connection('discogs')->table('discogs_artists_infos')->get();
+
+        foreach($artists as $artist){
             Artist::create(array(
-                'name' => $faker->unique()->sentence(3)
+                'name' => $artist->artist_name,
+                'real_name' => $artist->real_name,
+                'profile' => $artist->profile,
+                'picture' => ''
             ));
         }
 
