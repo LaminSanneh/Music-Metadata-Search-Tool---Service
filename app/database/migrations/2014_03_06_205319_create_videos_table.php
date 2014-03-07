@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateArtistsTable extends Migration {
+class CreateVideosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,17 @@ class CreateArtistsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('artists', function(Blueprint $table) {
+		Schema::create('videos', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
+			$table->string('url');
+			$table->string('picture');
+			$table->string('type');
 			$table->timestamps();
+		});
+        DB::statement('ALTER TABLE videos ADD FULLTEXT search(name)');
+	}
 
-        });
-        DB::statement('ALTER TABLE artists ADD FULLTEXT search(name)');
-    }
 
 	/**
 	 * Reverse the migrations.
@@ -28,7 +31,7 @@ class CreateArtistsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('artists');
+		Schema::drop('videos');
 	}
 
 }

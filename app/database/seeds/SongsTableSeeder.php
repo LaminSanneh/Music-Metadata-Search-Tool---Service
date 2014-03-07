@@ -5,7 +5,8 @@ class SongsTableSeeder extends Seeder {
 
 	public function run()
 	{
-		// Uncomment the below to wipe the table clean before populating
+         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
 		 DB::table('songs')->truncate();
 
         $discogs_albums_tracks = DB::connection('discogs')->table('discogs_albums_tracks')->get();
@@ -16,6 +17,8 @@ class SongsTableSeeder extends Seeder {
                 'album_id' => $discogs_albums_track->album_id
             ));
         }
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
 }

@@ -14,11 +14,12 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('UserTableSeeder');
 //		$this->call('ArtistsTableSeeder');
 //		$this->call('AlbumsTableSeeder');
-		$this->call('SongsTableSeeder');
+//		$this->call('SongsTableSeeder');
 //		$this->call('DiscogsArtistIdsTableSeeder');
 //		$this->call('DiscogsArtistInfosTableSeeder');
 //		$this->call('DiscogsArtistAlbumsTableSeeder');
 //		$this->call('DiscogsAlbumTracksTableSeeder');
+		$this->call('AddRandomArtistPicturesTableSeeder');
 	}
 
 }

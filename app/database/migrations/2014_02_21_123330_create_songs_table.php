@@ -16,8 +16,10 @@ class CreateSongsTable extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->timestamps();
-		});
-	}
+
+        });
+        DB::statement('ALTER TABLE songs ADD FULLTEXT search(name)');
+    }
 
 
 	/**

@@ -1,6 +1,13 @@
 <?php
-
-class AlbumsController extends BaseController {
+namespace Thirdyear\Modules\Api\V1\Controllers;
+use \Artist as Artist;
+use \Album as Album;
+use \Song as Song;
+use Illuminate\Support\Facades\Redirect;
+use \View as View;
+use \Input as Input;
+use \Response as Response;
+class AlbumsController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -10,7 +17,12 @@ class AlbumsController extends BaseController {
 	public function index()
 	{
         $name = Input::get('name');
-        $albums = Artist::where('name','LIKE',"%$name%")->get()->toArray();
+//        $albums = Album::where('name','LIKE',"%$name%")->get()->toArray();
+        if(isset($name)){
+            $albums = Album::whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", array($name.'*'))->get()->toArray();
+        }else{
+            $albums = Album::all()->toArray();
+        }
         return Response::json(compact('albums'));
 	}
 

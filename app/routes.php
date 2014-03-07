@@ -44,8 +44,10 @@ Route::group(array('prefix' => 'admin', 'namespace' => '\Modules\Admin\Controlle
 
 Route::get('/', array('as' => 'home', 'uses' => 'HomeController@index'));
 
-Route::resource('songs', 'SongsController');
+Route::group(array('prefix' => 'api/v1', 'namespace' => 'Thirdyear\Modules\Api\V1\Controllers'), function(){
+    Route::resource('artists', 'ArtistsController');
+    Route::resource('songs', 'SongsController');
+    Route::resource('albums', 'AlbumsController');
+    Route::resource('videos', 'VideosController');
+});
 
-Route::resource('artists', 'ArtistsController');
-
-Route::resource('albums', 'AlbumsController');

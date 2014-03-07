@@ -6,8 +6,9 @@ class ArtistsTableSeeder extends Seeder {
 
 	public function run()
 	{
-		// Uncomment the below to wipe the table clean before populating
-		 DB::table('artists')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
+		DB::table('artists')->truncate();
 
         $faker = Faker::create();
 
@@ -21,6 +22,8 @@ class ArtistsTableSeeder extends Seeder {
                 'picture' => ''
             ));
         }
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
 		// Uncomment the below to run the seeder
 		// DB::table('artists')->insert($artists);

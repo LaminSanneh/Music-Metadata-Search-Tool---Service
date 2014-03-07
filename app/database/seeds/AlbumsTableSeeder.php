@@ -6,7 +6,8 @@ class AlbumsTableSeeder extends Seeder {
 
 	public function run()
 	{
-		// Uncomment the below to wipe the table clean before populating
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
 		DB::table('albums')->truncate();
 
         $discogs_albums = DB::connection('discogs')->table('discogs_artists_albums')->get();
@@ -61,6 +62,8 @@ class AlbumsTableSeeder extends Seeder {
                 ));
             }
         }
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 	}
 
 }

@@ -1,6 +1,13 @@
 <?php
-
-class ArtistsController extends BaseController {
+namespace Thirdyear\Modules\Api\V1\Controllers;
+use \Artist as Artist;
+use \Album as Album;
+use \Song as Song;
+use Illuminate\Support\Facades\Redirect;
+use \View as View;
+use \Input as Input;
+use \Response as Response;
+class SongsController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -10,8 +17,14 @@ class ArtistsController extends BaseController {
 	public function index()
 	{
         $name = Input::get('name');
-        $artists = Artist::where('name','LIKE',"%$name%")->get()->toArray();
-        return Response::json(compact('artists'));
+//        $songs = Song::where('name','LIKE',"%$name%")->get()->toArray();
+        if(isset($name)){
+            $songs = Song::whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", array($name.'*'))->get()->toArray();
+        }
+        else{
+            $songs = Song::all()->toArray();
+        }
+        return Response::json(compact('songs'));
 	}
 
 	/**
@@ -21,7 +34,7 @@ class ArtistsController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('artists.create');
+        return View::make('songs.create');
 	}
 
 	/**
@@ -42,7 +55,7 @@ class ArtistsController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('artists.show');
+        return View::make('songs.show');
 	}
 
 	/**
@@ -53,7 +66,7 @@ class ArtistsController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('artists.edit');
+        return View::make('songs.edit');
 	}
 
 	/**
