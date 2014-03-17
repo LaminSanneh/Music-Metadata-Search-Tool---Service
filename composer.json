@@ -9,12 +9,15 @@
         "way/generators":"dev-master",
         "fzaninotto/faker": "1.4.*@dev",
         "ricbra/php-discogs-api": "dev-master",
-        "guzzle/guzzle": "3.8.*@dev"
+        "guzzle/guzzle": "3.8.*@dev",
+        "league/fractal": "0.7.*",
+        "bogardo/mailgun": "dev-master",
+        "raveren/kint": "v0.9"
 	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
-			"app/Thirdyear",
+			"app/ThirdYear",
 			"app/controllers",
 			"app/models",
 			"app/database/migrations",

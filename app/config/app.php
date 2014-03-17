@@ -107,7 +107,9 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Barryvdh\Cors\CorsServiceProvider',
-        'Way\Generators\GeneratorsServiceProvider'
+        'Way\Generators\GeneratorsServiceProvider',
+        'ThirdYear\Services\IocBindingServiceProvider',
+        'Bogardo\Mailgun\MailgunServiceProvider'
 
 	),
 

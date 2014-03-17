@@ -7,7 +7,14 @@ use Illuminate\Support\Facades\Redirect;
 use \View as View;
 use \Input as Input;
 use \Response as Response;
+use ThirdYear\Services\Album\AlbumServiceInterface;
 class AlbumsController extends \BaseController {
+
+    public $albumService;
+
+    public function __construct(AlbumServiceInterface $albumService){
+        $this->albumService = $albumService;
+    }
 
 	/**
 	 * Display a listing of the resource.
@@ -17,13 +24,16 @@ class AlbumsController extends \BaseController {
 	public function index()
 	{
         $name = Input::get('name');
-//        $albums = Album::where('name','LIKE',"%$name%")->get()->toArray();
-        if(isset($name)){
-            $albums = Album::whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", array($name.'*'))->get()->toArray();
-        }else{
-            $albums = Album::all()->toArray();
-        }
-        return Response::json(compact('albums'));
+//        dd($name);
+        $albums = $this->albumService->getAlbumsByName($name);
+
+        $albums = array_map(function($album){
+            $artist_id = $album["artist"]["id"];
+            $album["artist"] = $artist_id;
+            return $album;
+        }, $albums);
+
+        return Response::json(compact('albums'),200);
 	}
 
 	/**
@@ -54,7 +64,29 @@ class AlbumsController extends \BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('albums.show');
+        $album = $this->albumService->getAlbumById($id);
+
+//        dd($album);
+//        Format for ember data
+        $data["songs"] = array_map(function($song){
+            return array(
+                'id' => $song["id"],
+                'name' => $song["name"],
+                'album' => $song["album_id"],
+            );
+        },$album["songs"]);
+
+
+        $album["artist"] = $album["artist"]["id"];
+        $album["songs"] = array_map(function($song){
+            return $song["id"];
+        },$album["songs"]);
+
+        $data["album"] = $album;
+
+//        dd($data);
+
+        return Response::json($data,200);
 	}
 
 	/**

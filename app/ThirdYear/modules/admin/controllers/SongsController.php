@@ -6,7 +6,7 @@
  * Time: 11:24 AM
  */
 
-namespace Modules\Admin\Controllers;
+namespace Thirdyear\Modules\Admin\Controllers;
 
 use \Artist as Artist;
 use \Album as Album;

@@ -6,7 +6,7 @@
  * Time: 9:04 PM
  */
 
-namespace Modules\Admin\Controllers;
+namespace Thirdyear\Modules\Admin\Controllers;
 use \Artist as Artist;
 use \Album as Album;
 use Illuminate\Support\Facades\Redirect;

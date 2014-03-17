@@ -18,7 +18,7 @@ class CreateArtistsTable extends Migration {
 			$table->timestamps();
 
         });
-        DB::statement('ALTER TABLE artists ADD FULLTEXT search(name)');
+//        DB::statement('ALTER TABLE artists ADD FULLTEXT search(name)');
     }
 
 	/**

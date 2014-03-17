@@ -19,7 +19,7 @@ return array(
   */
     'defaults' =>  array(
         'allow_credentials' => false,
-        'allow_origin'=> array('http://thirdyearclient.com'),
+        'allow_origin'=> \DB::table('api_keys')->where('is_active',true)->lists('domain'),
         'allow_headers'=> array('*'),
         'allow_methods'=> array('POST', 'PUT', 'GET', 'DELETE','OPTIONS'),
         'expose_headers'=> array(),
@@ -28,7 +28,7 @@ return array(
 
     'paths' => array(
         '^/' => array(
-            'allow_origin'=> array('*'),
+            'allow_origin'=> \DB::table('api_keys')->where('is_active',true)->lists('domain'),
             'allow_headers'=> array('Content-Type'),
             'allow_methods'=> array('POST', 'PUT', 'GET', 'DELETE'),
             'max_age' => 3600

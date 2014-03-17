@@ -22,15 +22,14 @@ class VideosController extends \BaseController {
 	public function index()
 	{
         $name = Input::get('name');
+        $type = Input::get('type');
         if(isset($name)){
-            $search_url = "search?part=snippet&q={$name}&order=relevance&type=video&videoDefinition=high&videoEmbeddable=true&key={$this->api_key}";
+            $search_url = "search?part=snippet&q={$name}&order=relevance&type=video&videoDefinition=high&videoEmbeddable=true&maxResults=25&key={$this->api_key}";
             $client = new Client($this->base_url);
             $request = $client->get($search_url);
             $response = $request->send();
             $videos = $response->json();
-//            dd($videos);
             $video_items = $videos["items"];
-
 
             $formatted_response = array();
             foreach($video_items as $video_item){
@@ -40,11 +39,27 @@ class VideosController extends \BaseController {
                 $video->picture= $video_item["snippet"]["thumbnails"]["high"]["url"];
                 $video->type= "youtube";
                 $video->id = $video_item["id"]["videoId"];
+                array_push($formatted_response, $video->toArray());
+            }
+            return Response::json(array('videos' => $formatted_response),200);
+        }
+        elseif(isset($type)){
+//            $search_url = "videos?q=music&part=snippet&order=relevance&chart=mostPopular&videoDefinition=high&videoEmbeddable=true&maxResults=25&key={$this->api_key}";
+            $search_url = "search?type=video&q=music&part=snippet&order=viewCount&videoDefinition=high&videoEmbeddable=true&maxResults=25&key={$this->api_key}";
+            $client = new Client($this->base_url);
+            $request = $client->get($search_url);
+            $response = $request->send();
+            $videos = $response->json();
+            $video_items = $videos["items"];
 
-//                if(!Video::where("url", $video->url)->count() > 0){
-//
-//                }
-
+            $formatted_response = array();
+            foreach($video_items as $video_item){
+                $video = new Video;
+                $video->url = "https://www.youtube.com/watch?v=".$video_item["id"]["videoId"];
+                $video->name = $video_item["snippet"]["title"];
+                $video->picture= $video_item["snippet"]["thumbnails"]["high"]["url"];
+                $video->type= "youtube";
+                $video->id = $video_item["id"]["videoId"];
                 array_push($formatted_response, $video->toArray());
             }
             return Response::json(array('videos' => $formatted_response),200);
@@ -82,8 +97,54 @@ class VideosController extends \BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('videos.show');
+        if(isset($name)){
+            $search_url = "search?part=snippet&q={$name}&order=relevance&type=video&videoDefinition=high&videoEmbeddable=true&key={$this->api_key}";
+            $client = new Client($this->base_url);
+            $request = $client->get($search_url);
+            $response = $request->send();
+            $videos = $response->json();
+            $video_items = $videos["items"];
+
+            $formatted_response = array();
+            foreach($video_items as $video_item){
+                $video = new Video;
+                $video->url = "https://www.youtube.com/watch?v=".$video_item["id"]["videoId"];
+                $video->name = $video_item["snippet"]["title"];
+                $video->picture= $video_item["snippet"]["thumbnails"]["high"]["url"];
+                $video->type= "youtube";
+                $video->id = $video_item["id"]["videoId"];
+                array_push($formatted_response, $video->toArray());
+            }
+            return Response::json(array('videos' => $formatted_response),200);
+        }
+        else{
+            return Response::json(array('message' => 'bad request, you must pass a name valid key in query string'), 404);
+        }
 	}
+
+    /**
+     * Gets the popular videos
+     */
+    public function popularVideos(){
+        $search_url = "videos?part=snippet&order=relevance&chart=mostPopular&videoDefinition=high&videoEmbeddable=true&key={$this->api_key}";
+        $client = new Client($this->base_url);
+        $request = $client->get($search_url);
+        $response = $request->send();
+        $videos = $response->json();
+        $video_items = $videos["items"];
+
+        $formatted_response = array();
+        foreach($video_items as $video_item){
+            $video = new Video;
+            $video->url = "https://www.youtube.com/watch?v=".$video_item["id"];
+            $video->name = $video_item["snippet"]["title"];
+            $video->picture= $video_item["snippet"]["thumbnails"]["high"]["url"];
+            $video->type= "youtube";
+            $video->id = $video_item["id"];
+            array_push($formatted_response, $video->toArray());
+        }
+        return Response::json($formatted_response,200);
+    }
 
 	/**
 	 * Show the form for editing the specified resource.

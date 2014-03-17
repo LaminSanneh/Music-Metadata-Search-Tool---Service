@@ -20,7 +20,7 @@ class CreateVideosTable extends Migration {
 			$table->string('type');
 			$table->timestamps();
 		});
-        DB::statement('ALTER TABLE videos ADD FULLTEXT search(name)');
+//        DB::statement('ALTER TABLE videos ADD FULLTEXT search(name)');
 	}
 
 

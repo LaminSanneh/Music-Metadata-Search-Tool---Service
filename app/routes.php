@@ -10,8 +10,12 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::group(array('namespace' => 'Thirdyear\Modules\PublicArea\Controllers'), function(){
+    Route::get('/', array('as' => 'home', 'uses' => 'PublicController@index'));
+});
 
-Route::group(array('prefix' => 'admin', 'namespace' => '\Modules\Admin\Controllers'), function(){
+
+Route::group(array('prefix' => 'admin', 'namespace' => 'Thirdyear\Modules\Admin\Controllers', 'before' => 'super-user'), function(){
 
     //Artists
     Route::get('artists/index',array('as' => 'admin.artists', 'uses' => 'ArtistsController@index'));
@@ -39,15 +43,49 @@ Route::group(array('prefix' => 'admin', 'namespace' => '\Modules\Admin\Controlle
     //Album Songs
     Route::get('albums/{id}/songs/new', array('as' => 'admin.newAlbumSong', 'uses' => 'AlbumsController@newAlbumSong'));
     Route::post('albums/{id}/songs/saveNew', array('as' => 'admin.saveNewAlbumSong', 'uses' => 'AlbumsController@saveNewAlbumSong'));
+
+
+    //Roles and Users
+    Route::resource('roles', 'RolesController');
+    Route::resource('users', 'UsersController');
+
+
+    Route::get('users/{id}/addToRole/{role_id}',
+        array('as' => 'admin.users.addToRole', 'uses' => 'UsersController@addToRole'));
+    Route::get('users/{id}/removeFromRole/{role_id}',
+        array('as' => 'admin.users.removeFromRole', 'uses' => 'UsersController@removeFromRole'));
+
+    //Api Keys
+    Route::get('activateApiKey/{keyId}', array('as' => 'activateApiKey', 'uses' => 'UsersController@activateApiKey'));
+    Route::get('deActivateApiKey/{keyId}', array('as' => 'deActivateApiKey', 'uses' => 'UsersController@deActivateApiKey'));
 });
 
+//Login, register and stuff like that
+Route::group(array('prefix' => 'regular', 'namespace' => 'Thirdyear\Modules\Admin\Controllers'), function(){
+    Route::get('login', array('as' => 'login', 'uses' => 'AuthController@showLoginForm'));
+    Route::post('login', array('as' => 'login', 'uses' => 'AuthController@handleLogin', 'before' => 'csrf'));
+    Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
+    Route::get('register', array('as' => 'register', 'uses' => 'AuthController@showRegistrationForm'));
+    Route::post('register', array('as' => 'register', 'uses' => 'AuthController@handleRegistration', 'before' => 'csrf'));
+});
 
-Route::get('/', array('as' => 'home', 'uses' => 'HomeController@index'));
+Route::group(array('prefix' => 'regular', 'namespace' => 'Thirdyear\Modules\Admin\Controllers', 'before' => 'auth'), function(){
+    //Api Keys
+    Route::post('requestNewApiKey', array('as' => 'requestNewApiKey', 'uses' => 'UsersController@requestNewApiKey'));
+    Route::get('deleteApiKey/{keyId}', array('as' => 'deleteApiKey', 'uses' => 'UsersController@deleteApiKey'));
+
+    //Auth
+    Route::get('account', array('as' => 'account', 'uses' => 'AuthController@account'));
+    Route::get('resendEmailConfirm', array('as' => 'resendEmailConfirm', 'uses' => 'AuthController@resendEmailConfirm'));
+    Route::post('activateUserAccount', array('as' => 'activateUserAccount', 'uses' => 'AuthController@activateUserAccount'));
+});
+
 
 Route::group(array('prefix' => 'api/v1', 'namespace' => 'Thirdyear\Modules\Api\V1\Controllers'), function(){
     Route::resource('artists', 'ArtistsController');
     Route::resource('songs', 'SongsController');
     Route::resource('albums', 'AlbumsController');
+    Route::get('videos/popularVideos', array('as' => 'popularVideos', 'uses' => 'VideosController@popularVideos'));
     Route::resource('videos', 'VideosController');
 });
 

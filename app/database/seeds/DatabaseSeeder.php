@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder {
 //		$this->call('DiscogsArtistInfosTableSeeder');
 //		$this->call('DiscogsArtistAlbumsTableSeeder');
 //		$this->call('DiscogsAlbumTracksTableSeeder');
-		$this->call('AddRandomArtistPicturesTableSeeder');
+//		$this->call('AddRandomArtistPicturesTableSeeder');
+		$this->call('SeedInitialRolesTableSeeder');
+		$this->call('SeedAdminUserTableSeeder');
 	}
 
 }

@@ -35,7 +35,15 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+    if (Auth::guest()) return Redirect::guest('/')->with('message','You must login to access this area');
+});
+
+/**
+ * Filter to check that you are a super user
+ */
+Route::filter('super-user', function()
+{
+    if (!Auth::check() || !Auth::user()->isSuperUser()) return Redirect::guest('/')->with('message','You dont have access to this area');
 });
 
 
